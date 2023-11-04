@@ -1,0 +1,144 @@
+---
+layout: post
+title: "QTimer & QThread"
+date:   2023-07-25
+categories: Embeded-GUI
+---
+
+## QTimer
+특정
+시간 주기로 Signal 을 보내는 객체로 `QtCore import` 해줘야한다.
+`사용 순서`
+1. interval 을 결정한다 (ms 단위)
+2. timeout signal 의 slot 지정
+3. timer start 메서드 호출
+
+`사용 메서드`
+1. start( ) : 시작
+2. stop( ) : 일시중지
+3. setInterval ( ) : ms 단위로 시간 단위 설정
+4. interval( ) : 현재 세팅된 interval 값 리턴
+5. isActivate ( ) : Timer 가 동작중인지 True / False
+
+```py
+from PySide6.QtWidgets import *
+from PySide6.QtCore import *
+
+# 함수는 소문자, 클래스는 대문자로 사용되는 관습이다.
+class MyApp(QWidget): # QWidegt을 상속받아, QWidegt 메서드를 다 사용가능하다.
+    def __init__(self): # 생성자 함수 : 생성시 자동 실행하는 셋팅 함수
+        super().__init__() # 부모(QWidget)의 init함수를 호출해줘야 Qwidget 메서드 사용가능
+        self.main() # self는 MyApp 클래스를 담은 win 객체로 MyApp 메서드를 사용가능하다.
+
+    def main(self):
+        self.tm = QTimer() # QTimer라는 클래스를 tm 객체로 받아, QTimer 내부 메서드 사용 가능
+
+        self.tm.setInterval(500) # 0.5초 타이머
+        self.tm.timeout.connect(self.run) # 0.5초가 지날때 마다, run 함수 실행
+        self.tm.start() # 타이머 실행
+
+    def run(self):
+        print("#", end = '')  # 다음줄 출력이 아닌 바로 뒤에 붙여서 출력
+
+# QApplication은 클래스로 app이라는 객체(변수)에 담는다.
+# QtWidgets에서 import한 것중 QApplication이 포함된다.
+app = QApplication()
+win = MyApp()
+win.show() # MyApp 내부에는 show 메서드가 없지만, 상속받은 QWidget에 포함된다.
+app.exec() # QApplication 무한루프로 실행
+```
+
+## QPrograssBar
+진행상태를 확인할 수 있는 Widget
+min ~ max 값 설정 후 value 값 세팅
+value( ) : 값 읽기
+setValue( 값 ) : 값으로 세팅
+![](https://velog.velcdn.com/images/dev-hoon/post/9a1d4284-805b-4712-9bf4-b8666f371c44/image.png)
+```py
+from PySide6.QtWidgets import *
+from PySide6.QtCore import *
+from progress import Ui_Form
+
+class MyApp(QWidget, Ui_Form):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+
+    def main(self):
+        pass
+
+    def progress(self):
+        self.progressBar.setValue(0) # progressBar의 value를 0으로 설정
+        self.tm = QTimer() 
+        self.tm.setInterval(30)  
+        self.tm.timeout.connect(self.run)  
+        self.tm.start()  
+
+    def run(self):
+        self.progressBar.setValue(self.progressBar.value() + 1)
+        if self.progressBar.value() >= 100:
+            self.tm.stop()
+
+
+app = QApplication()
+main = MyApp()
+main.show()
+app.exec()
+```
+
+## QThread
+각각의 QWidget을 멈춤없이 개별적으로 실행시키기 위해서 사용된다.
+캡슐화로 보호되어있는 객체지향이기 때문에 뮤텍스는 쓰지 않습니다.
+Overriding(오버라이딩) : 종속된 것 중 함수가 겹치는 부분을 실행할 때는, 겹치는 함수 모두 실행된다.
+
+```py
+from PySide6.QtWidgets import *
+from PySide6.QtCore import * # QThread 사용 import
+from thread import Ui_Form
+from time import sleep
+
+# Logic Thread
+class MyThread(QThread):
+
+    mySignal = Signal(int, int) # 다수의 파라미터 전송 가능
+
+    def __init__(self):
+        super().__init__()
+
+    def run(self):
+        for i in range(5):
+            for x in range(101):
+                self.mySignal.emit(i, x) # 값 보내기
+                sleep(0.03)
+
+# UI Control Thread
+class MyApp(QWidget, Ui_Form):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+        self.th = MyThread()
+        self.th.mySignal.connect(self.setValue)
+        self.main()
+
+    def setValue(self, i, x):
+        self.pros[i].setValue(x)
+
+    def main(self):
+        self.pros = [] # 클래스 내에서 사용가능토록 self를 붙여줌
+        lay = self.verticalProgressLayout
+
+        for i in range(lay.count()):
+            self.pros.append(lay.itemAt(i).widget())  # 모든 Progressbar를 배열에 담기
+            self.pros[i].setValue(0) # 모든 progressbar 0으로 셋팅
+
+    def go(self):
+        self.th.start() # MyThread의 run 함수 실행
+
+
+app = QApplication()
+win = MyApp()
+win.show()
+app.exec()
+```
+
+

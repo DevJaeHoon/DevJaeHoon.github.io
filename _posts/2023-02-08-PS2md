@@ -1,0 +1,95 @@
+---
+layout: post
+title: "포인터"
+date:   2023-02-08
+categories: PS
+---
+
+## 1) 포인터
+`포인터`의 개념부터 알아보겠습니다.
+
+**포인터란?**
+1. 주소를 저장하는 변수
+2. 주소를 저장하고 있을 때 '가리킨다'.
+3. 가리킬 때 원격으로 접근 가능
+
+**사용예시**
+```cpp
+#include <iostream>
+using namespace std;
+
+
+int main() {
+	
+	int x = 15;
+	char y = 'A';
+	int* a = &x;
+	// 포인터의 자료형은 가리키는 변수의 자료형과 동일하게 설정해줘야 한다.
+	char* b = &y; 
+
+	cout << *a <<"\n" << *b<< "\n";
+	
+	
+	
+	return 0;
+}
+```
+
+`포인터 쉽게 이해하기 : *a는 x라고 생각하고, *b는 y라 생각하기!!!`
+
+>결과
+![](https://images.velog.io/images/dev-hoon/post/b96fa8cb-c73e-4dd1-b329-9729be142d5c/image.png)
+
+---
+## 2) Call by reference
+**Call by reference**는 포인터를 응용한 개념으로, `여러 개의 리턴값을 한 함수에서 하기` 위해 사용된다.
+
+**기초) 사용예시**
+```cpp
+#include <iostream>
+using namespace std;
+
+void abc(int* a) {
+	*a = 10;
+}
+
+int main() {
+	
+	int a = 15;
+    // a를 10으로 바꿔주는 함수
+	abc(&a);
+
+	cout << a <<endl;
+
+	return 0;
+}
+```
+> 결과
+![](https://images.velog.io/images/dev-hoon/post/cd7a9da1-131d-4553-927b-53f3cc637dca/image.png)
+
+abc(&a)는 `a라는 변수에 값을 담아주세요!` 라고 생각하면 이해하기 편하다.
+
+**심화) 사용예시**
+```cpp
+#include <iostream>
+using namespace std;
+
+void abc(int* p1, int* p2, int a, int b) {
+	*p1 = a + b; // 3 + 7 = 10
+	*p2 = a * b; // 3 * 7 = 21
+}
+
+int main() {
+	
+	int r1, r2;
+	// 하나의 함수로 2개의 변수를 return 받을 수 있다.
+	abc(&r1, &r2, 3, 7);
+
+	cout << r1 << endl;
+	cout << r2 << endl;
+
+	return 0;
+}
+```
+>결과
+![](https://images.velog.io/images/dev-hoon/post/c59c2cf8-7277-4457-84f8-cc0580577385/image.png)

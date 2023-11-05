@@ -2,11 +2,6 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	{%- feed_meta -%}
-	
-	{%- if jekyll.environment == 'production' and site.google_analytics -%}
-		{%- include google-analytics.html -%}
-	{%- endif -%}
 	<title>HoonTB</title>
 	<link rel="apple-touch-icon" sizes="57x57" href="../public/img/favicon/apple-icon-57x57.png">
 	<link rel="apple-touch-icon" sizes="60x60" href="../public/img/favicon/apple-icon-60x60.png">
@@ -25,4 +20,10 @@
 	<meta name="msapplication-TileColor" content="#ffffff">
 	<meta name="msapplication-TileImage" content="../public/img/favicon/ms-icon-144x144.png">
 	<meta name="theme-color" content="#ffffgf">
+	{%- feed_meta -%}
+	
+	{%- if jekyll.environment == 'production' and site.google_analytics -%}
+		{%- include google-analytics.html -%}
+	{%- endif -%}
+	
 </head>

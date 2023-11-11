@@ -1,0 +1,115 @@
+---
+layout: post
+title: "언어"
+date:   2023-10-08
+categories: CS
+tags: 기타
+---
+
+### HTML5
+
+- Ajax를 활용하여 고화질 이미지 및 영상 표현
+
+### UX vs UI
+
+- UX(User Experience) : 유저 경험에 의한 디자인 ex) 오른손잡이
+- UI(User Interface) : 사용자가 사용할 시각적 인터페이스
+
+## C
+
+### 진수
+
+- 컴퓨터는 기본적으로 2진수, 사람은 10진수 하지만 변환에 용이한 16진수를 주로 사용
+
+### 비트연산
+
+- MCU 내부의 각자 장치를 작동시키기 위한 연산
+
+### 엔디안
+
+CPU가 메모리에 값을 저장할 때 저장 순서 바이트 단위
+
+- 빅엔디안 : 사람이 읽기 쉬운 방식으로 저장, 디버깅이 편함
+- 리틀엔디안 : 반대로 저장, Byte 단위임을 유의
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/cb7d41ea-f191-4046-a0bf-a0b102d1fb83/af0ba7e5-44fa-4380-9d12-b853d9847b6e/Untitled.png)
+
+### Overflow vs Underflow
+
+- 변수 저장 범위를 벗어나면 발생되는 현상
+- char(-128~127) ⇒ -129는 underflow로 127이 저장, 128는 overflow로 -128이 저장
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/cb7d41ea-f191-4046-a0bf-a0b102d1fb83/7f0501f7-7d5a-43fe-9d26-92bbcaa911a5/Untitled.png)
+
+### Truncation
+
+- 자료형 변경시 일부 짤리게 되는 경우 ex) 실수형 → 정수형
+
+### 부동소수점
+
+- 실수로 저장할 때 정확한 값이 아닌 근사치로 저장 ex) double, float
+
+### 함수 Parameter vs Argument
+
+- Parameter : 전달인자
+- Argument : 실행인자
+
+```jsx
+#include <stdio.h>
+
+int abc(int a, int b)  // a, b는 parameter
+{
+	return a+b;
+}
+
+int main()
+{
+	int result;
+	result = abc(2, 3); // 2, 3 은 argument
+
+	return 0;
+}
+```
+
+
+### 컴파일 내부동작
+
+- 컴파일 : 소스코드를 CPU가 이해할 수 있는 기계어(오브젝트) 코드로 바꾸는 것
+- 과정 : c파일(소스코드) ⇒ 전처리기 ⇒ i파일 ⇒ 컴파일러 ⇒ s파일(어셈블리어) ⇒ 어셈블러 ⇒ o파일(기계어) ⇒ 링커 ⇒ .exe(실행파일)
+
+### #include
+
+- 내부 라이브러리 : #include <stdio.h>
+- 유저 파일 : #include “abc.h”
+
+### 헤더파일
+
+- 헤더파일은 전처리 되지만 컴파일되지 않는다.
+
+## JS
+
+### 변수 선언
+
+- var : 사용하지 않음
+- const : 배열 및 객체 선언
+- let : for문과 같이 계속 변경되는 함수
+
+### 이벤트 버블링 vs 이벤트 캡처링
+
+- 이벤트 버블링 : 이벤트 발생 부분부터 최상단 바디까지 연속적으로 올라가며 실행
+- 이벤트 캡처링 : 최상단 바디에서 타겟을 찾기위해 내려가는 형식
+- 이벤트 위임 : 부모한테 이벤트를 맡긴다
+
+### Promise & Async/Await
+
+- Promise : 비동기 작업을 편하게 해줄 수 있게 해줌
+- Async/await : 비동기를 동기처럼 사용하게 해주며, Callback 함수를 사용할 수 있게 해줌
+
+### JSON
+
+- Key-Value 구조로 클라이언트와 서버간 비동기 통신할 때 사용
+- API들이 JSON 형식으로 데이터를 주고 받음
+
+### URL
+
+- 서버의 주소/서버 API 구조
